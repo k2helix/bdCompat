@@ -12,20 +12,20 @@ const {
 } = require("./modules");
 const Settings = require("./components/Settings");
 
-module.exports = class bdCompatArjix extends Plugin {
+module.exports = class bdCompat extends Plugin {
     startPlugin() {
         this.loadStylesheet("style.css");
         this.defineGlobals();
 
-        powercord.api.settings.registerSettings("bdCompat-Arjix", {
-            category: "bdCompat-Arjix",
+        powercord.api.settings.registerSettings("bdCompat", {
+            category: "bdCompat",
             label: "BetterDiscord Plugins-Arjix",
             render: Settings,
         });
     }
 
     pluginWillUnload() {
-        powercord.api.settings.unregisterSettings("bdCompat-Arjix");
+        powercord.api.settings.unregisterSettings("bdCompat");
         if (window.pluginModule) window.pluginModule.destroy();
         if (window.ContentManager) window.ContentManager.destroy();
         this.destroyGlobals();
@@ -34,7 +34,7 @@ module.exports = class bdCompatArjix extends Plugin {
     defineGlobals() {
         let webReq;
         window.webpackChunkdiscord_app.push([
-            ["bdCompat-Arjix"],
+            ["bdCompat"],
             {},
             (r) => (webReq = r),
         ]);

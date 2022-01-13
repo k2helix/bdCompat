@@ -624,15 +624,15 @@ class BdApi {
     }
 
     static __log(...message) {
-        console.log("%c[bdCompat-Arjix:BdApi]", "color: #3a71c1;", ...message);
+        console.log("%c[bdCompat:BdApi]", "color: #3a71c1;", ...message);
     }
 
     static __warn(...message) {
-        console.log("%c[bdCompat-Arjix:BdApi]", "color: #e8a400;", ...message);
+        console.log("%c[bdCompat:BdApi]", "color: #e8a400;", ...message);
     }
 
     static __error(error, ...message) {
-        console.log("%c[bdCompat-Arjix:BdApi]", "color: red;", ...message);
+        console.log("%c[bdCompat:BdApi]", "color: red;", ...message);
 
         if (error) {
             console.groupCollapsed(`%cError: ${error.message}`, "color: red;");

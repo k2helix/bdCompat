@@ -68,10 +68,8 @@ module.exports = class BDPluginManager {
 
         plugins.forEach((pluginName) => {
             if (
-                window.BdApi.loadData(
-                    "bdCompat-Arjix-EnabledPlugins",
-                    pluginName
-                ) === true
+                window.BdApi.loadData("bdCompat-EnabledPlugins", pluginName) ===
+                true
             )
                 this.startPlugin(pluginName);
         });
@@ -113,7 +111,7 @@ module.exports = class BDPluginManager {
         } catch (err) {
             this.__error(err, `Could not start ${plugin.plugin.getName()}`);
             window.BdApi.saveData(
-                "bdCompat-Arjix-EnabledPlugins",
+                "bdCompat-EnabledPlugins",
                 plugin.plugin.getName(),
                 false
             );
@@ -137,7 +135,7 @@ module.exports = class BDPluginManager {
             this.__error(err, `Could not stop ${plugin.plugin.getName()}`);
             if (this.settings.get("disableWhenStopFailed"))
                 window.BdApi.saveData(
-                    "bdCompat-Arjix-EnabledPlugins",
+                    "bdCompat-EnabledPlugins",
                     plugin.plugin.getName(),
                     false
                 );
@@ -169,7 +167,7 @@ module.exports = class BDPluginManager {
             );
 
         window.BdApi.saveData(
-            "bdCompat-Arjix-EnabledPlugins",
+            "bdCompat-EnabledPlugins",
             plugin.plugin.getName(),
             true
         );
@@ -184,7 +182,7 @@ module.exports = class BDPluginManager {
             );
 
         window.BdApi.saveData(
-            "bdCompat-Arjix-EnabledPlugins",
+            "bdCompat-EnabledPlugins",
             plugin.plugin.getName(),
             false
         );
@@ -293,7 +291,7 @@ module.exports = class BDPluginManager {
             plugin.getAuthor = () => meta.author || meta.authorId || "Unknown";
     }
 
-    // ZLibrary checks for instanceof Function and Function class is different in renderer and preload, so need to fix it in bdCompat-Arjix
+    // ZLibrary checks for instanceof Function and Function class is different in renderer and preload, so need to fix it in bdCompat
     __patchZLibPatcher() {
         this.__unpatchZLibPatcher();
 
@@ -303,7 +301,7 @@ module.exports = class BDPluginManager {
 
         const origFunction = Function;
         inject(
-            "bdCompat-Arjix-zlib-patcher-pre",
+            "bdCompat-zlib-patcher-pre",
             window.ZLibrary.Patcher,
             "pushChildPatch",
             (args) => {
@@ -319,7 +317,7 @@ module.exports = class BDPluginManager {
             true
         );
         inject(
-            "bdCompat-Arjix-zlib-patcher",
+            "bdCompat-zlib-patcher",
             window.ZLibrary.Patcher,
             "pushChildPatch",
             (_, res) => {
@@ -331,8 +329,8 @@ module.exports = class BDPluginManager {
         this.__log("Patched ZLibrary Patcher");
     }
     __unpatchZLibPatcher() {
-        uninject("bdCompat-Arjix-zlib-patcher-pre");
-        uninject("bdCompat-Arjix-zlib-patcher");
+        uninject("bdCompat-zlib-patcher-pre");
+        uninject("bdCompat-zlib-patcher");
     }
 
     disable = this.disablePlugin;
@@ -341,7 +339,7 @@ module.exports = class BDPluginManager {
 
     __log(...message) {
         console.log(
-            "%c[bdCompat-Arjix:BDPluginManager]",
+            "%c[bdCompat:BDPluginManager]",
             "color: #3a71c1;",
             ...message
         );
@@ -349,7 +347,7 @@ module.exports = class BDPluginManager {
 
     __warn(...message) {
         console.warn(
-            "%c[bdCompat-Arjix:BDPluginManager]",
+            "%c[bdCompat:BDPluginManager]",
             "color: #e8a400;",
             ...message
         );
@@ -357,7 +355,7 @@ module.exports = class BDPluginManager {
 
     __error(error, ...message) {
         console.error(
-            "%c[bdCompat-Arjix:BDPluginManager]",
+            "%c[bdCompat:BDPluginManager]",
             "color: red;",
             ...message
         );
