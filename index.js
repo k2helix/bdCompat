@@ -19,7 +19,7 @@ module.exports = class bdCompat extends Plugin {
 
         powercord.api.settings.registerSettings("bdCompat", {
             category: "bdCompat",
-            label: "BetterDiscord Plugins-Arjix",
+            label: "BetterDiscord Plugins",
             render: Settings,
         });
     }
