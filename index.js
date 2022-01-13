@@ -1,88 +1,123 @@
-'use strict'
+"use strict";
 
-const { Plugin } = require('powercord/entities')
-const process = require('process')
+const { Plugin } = require("powercord/entities");
+const process = require("process");
 
-const { AddonAPI, BDApi, BDV2, ContentManager, PluginManager } = require('./modules')
-const Settings = require('./components/Settings')
+const {
+    AddonAPI,
+    BDApi,
+    BDV2,
+    ContentManager,
+    PluginManager,
+} = require("./modules");
+const Settings = require("./components/Settings");
 
-module.exports = class BDCompat extends Plugin {
-  startPlugin () {
-    this.loadStylesheet('style.css')
-    this.defineGlobals()
+module.exports = class bdCompatArjix extends Plugin {
+    startPlugin() {
+        this.loadStylesheet("style.css");
+        this.defineGlobals();
 
-    powercord.api.settings.registerSettings('bdCompat', {
-      category: 'bdCompat',
-      label: 'BetterDiscord Plugins',
-      render: Settings
-    });
-  }
-
-  pluginWillUnload () {
-    powercord.api.settings.unregisterSettings('bdCompat') 
-    if (window.pluginModule) window.pluginModule.destroy()
-    if (window.ContentManager) window.ContentManager.destroy()
-    this.destroyGlobals()
-  }
-
-  defineGlobals () {
-    let webReq
-    window.webpackChunkdiscord_app.push([
-      ['bdCompat'],
-      {},
-      r => webReq = r
-    ])
-    window.webpackJsonp = []
-    window.webpackJsonp.push = ([, mod, [[id]]]) => {
-      return mod[id]({}, {}, webReq)
+        powercord.api.settings.registerSettings("bdCompat-Arjix", {
+            category: "bdCompat-Arjix",
+            label: "BetterDiscord Plugins-Arjix",
+            render: Settings,
+        });
     }
 
-    window.bdConfig = { dataPath: __dirname }
-    window.settingsCookie = {}
+    pluginWillUnload() {
+        powercord.api.settings.unregisterSettings("bdCompat-Arjix");
+        if (window.pluginModule) window.pluginModule.destroy();
+        if (window.ContentManager) window.ContentManager.destroy();
+        this.destroyGlobals();
+    }
 
-    window.bdplugins = {}
-    window.pluginCookie = {}
-    window.bdpluginErrors = []
+    defineGlobals() {
+        let webReq;
+        window.webpackChunkdiscord_app.push([
+            ["bdCompat-Arjix"],
+            {},
+            (r) => (webReq = r),
+        ]);
+        window.webpackJsonp = [];
+        window.webpackJsonp.push = ([, mod, [[id]]]) => {
+            return mod[id]({}, {}, webReq);
+        };
 
-    window.bdthemes = {}
-    window.themeCookie = {}
-    window.bdthemeErrors = []
+        window.bdConfig = { dataPath: __dirname };
+        window.settingsCookie = {};
 
-    // window.BdApi = BDApi
+        window.bdplugins = {};
+        window.pluginCookie = {};
+        window.bdpluginErrors = [];
 
-    // Orignally BdApi is an object, not a class
-    window.BdApi = {}
-    Object.getOwnPropertyNames(BDApi).filter(m => typeof BDApi[m] == 'function' || typeof BDApi[m] == 'object').forEach(m => {
-      window.BdApi[m] = BDApi[m]
-    })
-    window.Utils = { monkeyPatch: BDApi.monkeyPatch, suppressErrors: BDApi.suppressErrors, escapeID: BDApi.escapeID }
+        window.bdthemes = {};
+        window.themeCookie = {};
+        window.bdthemeErrors = [];
 
-    window.BDV2 = BDV2
-    window.ContentManager = new ContentManager
-    window.pluginModule   = new PluginManager(window.ContentManager.pluginsFolder, this.settings)
+        // window.BdApi = BDApi
 
-    // DevilBro's plugins checks whether or not it's running on ED
-    // This isn't BetterDiscord, so we'd be better off doing this.
-    // eslint-disable-next-line no-process-env
-    process.env.injDir = __dirname
+        // Orignally BdApi is an object, not a class
+        window.BdApi = {};
+        Object.getOwnPropertyNames(BDApi)
+            .filter(
+                (m) =>
+                    typeof BDApi[m] == "function" || typeof BDApi[m] == "object"
+            )
+            .forEach((m) => {
+                window.BdApi[m] = BDApi[m];
+            });
+        window.Utils = {
+            monkeyPatch: BDApi.monkeyPatch,
+            suppressErrors: BDApi.suppressErrors,
+            escapeID: BDApi.escapeID,
+        };
 
-    window.BdApi.Plugins = new AddonAPI(window.bdplugins, window.pluginModule)
-    window.BdApi.Themes  = new AddonAPI({}, {})
+        window.BDV2 = BDV2;
+        window.ContentManager = new ContentManager();
+        window.pluginModule = new PluginManager(
+            window.ContentManager.pluginsFolder,
+            this.settings
+        );
 
-    this.log('Defined BetterDiscord globals')
-  }
+        // DevilBro's plugins checks whether or not it's running on ED
+        // This isn't BetterDiscord, so we'd be better off doing this.
+        // eslint-disable-next-line no-process-env
+        process.env.injDir = __dirname;
 
-  destroyGlobals () {
-    const globals = ['bdConfig', 'settingsCookie', 'bdplugins', 'pluginCookie', 'bdpluginErrors', 'bdthemes',
-      'themeCookie', 'bdthemeErrors', 'BdApi', 'Utils', 'BDV2', 'ContentManager', 'pluginModule', 'webpackJsonp']
+        window.BdApi.Plugins = new AddonAPI(
+            window.bdplugins,
+            window.pluginModule
+        );
+        window.BdApi.Themes = new AddonAPI({}, {});
 
-    globals.forEach(g => {
-      delete window[g]
-    })
+        this.log("Defined BetterDiscord globals");
+    }
 
-    // eslint-disable-next-line no-process-env
-    delete process.env.injDir
+    destroyGlobals() {
+        const globals = [
+            "bdConfig",
+            "settingsCookie",
+            "bdplugins",
+            "pluginCookie",
+            "bdpluginErrors",
+            "bdthemes",
+            "themeCookie",
+            "bdthemeErrors",
+            "BdApi",
+            "Utils",
+            "BDV2",
+            "ContentManager",
+            "pluginModule",
+            "webpackJsonp",
+        ];
 
-    this.log('Destroyed BetterDiscord globals')
-  }
-}
+        globals.forEach((g) => {
+            delete window[g];
+        });
+
+        // eslint-disable-next-line no-process-env
+        delete process.env.injDir;
+
+        this.log("Destroyed BetterDiscord globals");
+    }
+};
