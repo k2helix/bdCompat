@@ -101,12 +101,12 @@ module.exports = class Settings extends React.Component {
                 [
                     {
                         type: 'button',
-                        name: Messages['POWERCORD_PLUGINS_OPEN_FOLDER'],
+                        name: 'Open Plugins Folder',
                         onClick: () => openPath(window.ContentManager.pluginsFolder)
                     },
                     {
                         type: 'button',
-                        name: Messages['POWERCORD_PLUGINS_LOAD_MISSING'],
+                        name: 'Load Missing Plugins',
                         onClick: () => this.loadMissing()
                     }
                 ]

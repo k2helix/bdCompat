@@ -24,24 +24,17 @@ module.exports = class BDPluginManager {
         });
         this.observer.observe(document, { childList: true, subtree: true });
 
-        // Wait for jQuery, then load the plugins
-        window.BdApi.linkJS(
-            "jquery",
-            "//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"
-        ).then(async () => {
-            this.__log("Loaded jQuery");
+        if (!window.jQuery) {
+            Object.defineProperty(window, "jQuery", {
+                get: () => webFrame.top.context.window.jQuery,
+            });
+            window.$ = window.jQuery;
+        }
 
-            if (!window.jQuery) {
-                Object.defineProperty(window, "jQuery", {
-                    get: () => webFrame.top.context.window.jQuery,
-                });
-                window.$ = window.jQuery;
-            }
-
-            const ConnectionStore = await getModule([
-                "isTryingToConnect",
-                "isConnected",
-            ]);
+        getModule([
+            "isTryingToConnect",
+            "isConnected",
+        ]).then((ConnectionStore) => {
             const listener = () => {
                 if (!ConnectionStore.isConnected()) return;
                 ConnectionStore.removeChangeListener(listener);
@@ -52,6 +45,7 @@ module.exports = class BDPluginManager {
             if (ConnectionStore.isConnected()) listener();
             else ConnectionStore.addChangeListener(listener);
         });
+        
     }
 
     destroy() {
