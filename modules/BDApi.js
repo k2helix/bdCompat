@@ -301,7 +301,7 @@ class BdApi {
             );
 
             document
-                .querySelector('#app-mount > div[class^="app-"]')
+                .querySelector('#app-mount > div[class^="app"]')
                 .appendChild(toastWrapper);
 
             return toastWrapper;
