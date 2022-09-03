@@ -166,7 +166,7 @@ module.exports = class BDPluginManager {
             true
         );
         this.startPlugin(pluginName);
-        window.BdApi.showToast(`${pluginName} was successfully enabled`)
+        // window.BdApi.showToast(`${pluginName} was successfully enabled`)
     }
     disablePlugin(pluginName) {
         const plugin = window.bdplugins[pluginName];
@@ -182,7 +182,7 @@ module.exports = class BDPluginManager {
             false
         );
         this.stopPlugin(pluginName);
-        window.BdApi.showToast(`${pluginName} was successfully disabled`)
+        // window.BdApi.showToast(`${pluginName} was successfully disabled`)
     }
 
     loadAllPlugins() {
